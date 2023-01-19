@@ -27,13 +27,22 @@ function App() {
 
   // Delete Task
   const deleteTask = (id: number): void => {
-    console.log('dziala', id)
+    setTasks(tasks.filter((task) => task.id !== id) )
   }
+
+  // Switch Reminder
+  const switchReminder = (id: number): void => {
+    setTasks(tasks.map((task) => task.id === id ? {...task, reminder: !task.reminder} : task))
+  }
+
+
 
   return (
     <div className="container">
       <Header title = "Task Tracker" />
-      <Tasks tasks={tasks} onDelete={deleteTask} />
+      { tasks.length !== 0 ? 
+      <Tasks tasks={tasks} onDelete={deleteTask} onDblClick={switchReminder} />
+      : "You have nothing to do!" }
     </div>
   );
 }

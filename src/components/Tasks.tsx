@@ -8,14 +8,15 @@ export interface TasksProps {
         reminder: boolean
     }[]
     onDelete: (id: number) => void
+    onDblClick: (id: number) => void
 }
 
 
-const Tasks = ({ tasks, onDelete }: TasksProps) => {
+const Tasks = ({ tasks, onDelete, onDblClick }: TasksProps) => {
   return (
     <>
         {tasks.map( (task) => ( 
-        <Task key={task.id} task={task} onDelete={onDelete} />
+        <Task key={task.id} task={task} onDelete={onDelete} onDblClick={onDblClick} />
         ))}
     </>
   )
