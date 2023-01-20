@@ -1,9 +1,8 @@
 import { FaTimes } from 'react-icons/fa'
-import { IconContext } from "react-icons";
-import Button from './Button'
+// import { IconContext } from "react-icons";
 
 
-export interface TaskProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface TaskProps {
     task: {
         id: number
         text: string
@@ -19,7 +18,7 @@ const Task = ({ task, onDelete, onDblClick }: TaskProps) => {
 
 
   return (
-    <div className="task" onDoubleClick={() => onDblClick(task.id)}>
+    <div className={`task ${task.reminder ? 'reminder' : ''}`} onDoubleClick={() => onDblClick(task.id)}>
         <h3>{task.text} 
         {/* <IconContext.Provider value={{ color: 'red', cursor: 'pointer' }} >
             <FaTimes  onClick={() => onDelete(task.id)} /> 
