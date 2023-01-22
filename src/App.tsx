@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
+import About from './components/About'
 
 
 function App() {
@@ -46,14 +49,27 @@ function App() {
 
 
   return (
-    <div className="container">
-      <Header title = "Task Tracker" onAdd={() => setShowAddButton(!showAddButton)} showAddButton={showAddButton} />
-      {showAddButton && <AddTask onAdd={addTask} />}
-      { tasks.length !== 0 ? 
-      <Tasks tasks={tasks} onDelete={deleteTask} onDblClick={switchReminder} />
-      : "You have nothing to do!" }
-    </div>
+    <Router>
+      <div className="container">
+        <Header title = "Task Tracker" onAdd={() => setShowAddButton(!showAddButton)} showAddButton={showAddButton} />
+        <Routes>
+          <Route path='/' element={
+            <>
+              {showAddButton && <AddTask onAdd={addTask} />}
+              { tasks.length !== 0 ? 
+              <Tasks tasks={tasks} onDelete={deleteTask} onDblClick={switchReminder} />
+              : "You have nothing to do!" }
+            </>
+          } />
+          <Route path='/about' element={ <About /> } />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
+
+
+
 }
 
 export default App;

@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom"
 import Button from "./Button"
 
 export interface HeaderProps {
@@ -9,10 +10,14 @@ export interface HeaderProps {
 
 
 const Header = ({ title, color = "" , onAdd, showAddButton}: HeaderProps) => {
+  const location = useLocation()
+
   return (
     <header className="header">
        <h1 style={{color: color}}>{title}</h1> 
-       <Button text={showAddButton ? "Close" : "Add"} color={showAddButton ? "red" : "green"} onClick={onAdd} />
+       {location.pathname === '/' && (
+         <Button text={showAddButton ? "Close" : "Add"} color={showAddButton ? "red" : "green"} onClick={onAdd} />
+         )}
     </header>
   )
 }
