@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 export interface addProps {
-    onAdd: (task: any) => void
+    onClick: (task: any) => void
 }
 
-const AddTask = ({ onAdd }: addProps) => {
+const AddTask = ({ onClick }: addProps) => {
     const [text, setText] = useState('')
     const [day, setDay] = useState('')
     const [reminder, setReminder] = useState(false)
@@ -17,7 +17,7 @@ const AddTask = ({ onAdd }: addProps) => {
             return
         }
 
-        onAdd({ text, day, reminder })
+        onClick({ text, day, reminder })
 
         setText('')
         setDay('')

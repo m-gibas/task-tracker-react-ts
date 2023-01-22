@@ -84,11 +84,11 @@ function App() {
   return (
     <Router>
       <div className="container">
-        <Header title = "Task Tracker" onAdd={() => setShowAddButton(!showAddButton)} showAddButton={showAddButton} />
+        <Header title = "Task Tracker" onClick={() => setShowAddButton(!showAddButton)} showAddButton={showAddButton} />
         <Routes>
           <Route path='/' element={
             <>
-              {showAddButton && <AddTask onAdd={addTask} />}
+              {showAddButton && <AddTask onClick={addTask} />}
               { tasks.length !== 0 ? 
               <Tasks tasks={tasks} onDelete={deleteTask} onDblClick={switchReminder} />
               : "You have nothing to do!" }
