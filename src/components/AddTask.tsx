@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { TaskProps } from "./Task";
 
 export interface addProps {
     onAdd: (task: any) => void
