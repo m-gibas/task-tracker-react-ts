@@ -7,7 +7,7 @@ const Footer = () => {
     <footer>
         <p>Copyright &copy; 2023</p>
         {location.pathname !== '/about' && (
-            <Link to="/about">About page</Link>
+            <Link to="/about" className="link">About page</Link>
         )}
     </footer>
   )
