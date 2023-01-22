@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
 import About from './components/About'
+import Tile from './calculator_components/Tile'
 
 
 export interface ArrTasksProps {
@@ -84,6 +85,35 @@ function App() {
   return (
     <Router>
       <div className="container">
+        <div className='calculator'>
+          <div className='output'>
+          {/* <Tile value='123' />
+          <Tile value='456' /> */}
+            <div className='previous-output'>123</div>
+            <div className='current-output'>456</div>
+          </div>
+          <Tile value='C' secondClass='double' />
+          <Tile value='DEL' secondClass='double' />
+          <Tile value='7'/>
+          <Tile value='8'/>
+          <Tile value='9'/>
+          <Tile value='÷'/>
+          <Tile value='4'/>
+          <Tile value='5'/>
+          <Tile value='6'/>
+          <Tile value='×'/>
+          <Tile value='1'/>
+          <Tile value='2'/>
+          <Tile value='3'/>
+          <Tile value='+'/>
+          <Tile value='.'/>
+          <Tile value='0'/>
+          <Tile value='='/>
+          <Tile value='-'/>
+        </div>
+      </div>
+
+      <div className="container">
         <Header title = "Task Tracker" onClick={() => setShowAddButton(!showAddButton)} showAddButton={showAddButton} />
         <Routes>
           <Route path='/' element={
@@ -98,6 +128,7 @@ function App() {
         </Routes>
         <Footer />
       </div>
+      
     </Router>
   );
 

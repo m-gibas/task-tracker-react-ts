@@ -127,3 +127,41 @@ footer {
   color: #000;
   cursor: pointer;
 }
+
+/* calculator style */
+
+.calculator {
+  width: 50%;
+  display: grid;
+  gap: 1px;
+  margin-top: 2rem;
+  box-shadow: 0 0 10px rgba(77, 73, 73, 0.6);
+
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: minmax(4rem, auto) repeat(5, 1fr);
+}
+
+.calculator .double {
+  grid-column: span 2;
+}
+
+.output {
+  grid-column: 1 / -1;
+  background-color: rgba(38, 37, 48, 0.9);
+  /* height: 4rem; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding-right: 0.8rem;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.output .previous-output {
+  color: #fff;
+}
+
+.output .current-output {
+  color: #fff;
+}
