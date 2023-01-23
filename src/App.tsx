@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -6,6 +6,7 @@ import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
 import About from './components/About'
 import Tile from './calculator_components/Tile'
+import OperationTile from './calculator_components/OperationTile'
 
 
 export interface ArrTasksProps {
@@ -15,10 +16,76 @@ export interface ArrTasksProps {
   reminder: boolean
 }
 
+export type ACTIONTYPE = 
+  | { type: "add-digit"; payload: number | '.' }
+  | { type: "delete-digit"; payload: undefined }
+  | { type: "clear-all"; payload: undefined }
+  | { type: "choose-operation"; payload: string }
+  | { type: "calculation"; payload: string };
+
+  // zmienic typ any
+function reducer(state: any, {type, payload}: ACTIONTYPE) {
+  switch (type) {
+    case "add-digit":
+      if(state.currentInput) {
+        if(payload === 0 && state.currentInput === '0') return state 
+        if(payload === '.' && state.currentInput.includes('.')) return state 
+        if(payload !== '.' && payload !== 0 && state.currentInput.length === 1 && state.currentInput === '0') state.currentInput = ''
+        if(payload === '.'  && state.currentInput.length === 0 ) state.currentInput = '0'
+      }
+      return { 
+        ...state, 
+        // currentInput: `${state.currentInput || ''}${payload}`};
+        currentInput: (state.currentInput || '') + payload };
+    case "delete-digit":
+      return { ...state,
+      currentInput: state.currentInput.slice(0, -1) };
+    case "clear-all":
+      return { ...state,
+      currentInput: state.currentInput.slice(-1, 0) };
+    case "choose-operation":
+      if(state.currentInput == null && state.previousInput == null) return state
+      if(state.previousInput == null) {
+        return {
+          ...state, 
+          operationSign: payload,
+          previousInput: state.currentInput + payload,
+          currentInput: null
+        }
+      }
+
+      return {
+        ...state,
+        previousInput: calculate(state),
+        operationSign: payload,
+        currentInput: null
+      }
+    case "calculation":
+      return { ...state,
+      currentInput: state.currentInput };
+    default:
+      throw new Error();
+  }
+}
+
+function calculate({ currentInput, previousInput, operationSign }: any) {
+  const previous = parseFloat(previousInput)
+  const current = parseFloat(currentInput)
+  if(isNaN(previous) || isNaN(current)) return ''
+  let value = 0
+  switch (operationSign) {
+    case '+': 
+      value = previous + current
+  }
+}
+
 function App() {
   const [showAddButton, setShowAddButton] = useState(false)
 
   const [tasks, setTasks] = useState([] as ArrTasksProps[])
+
+  const [{ currentInput, previousInput, operationSign }, dispatch] = useReducer(reducer, {})
+
 
   useEffect(() => {
     const getTasks = async () => {
@@ -81,35 +148,56 @@ function App() {
   }
 
 
+  // Calculator functionality
+
+  
+
 
   return (
     <Router>
       <div className="container">
         <div className='calculator'>
           <div className='output'>
-          {/* <Tile value='123' />
-          <Tile value='456' /> */}
-            <div className='previous-output'>123</div>
-            <div className='current-output'>456</div>
+            <div className='previous-output'>{previousInput}</div>
+            <div className='current-output'>{currentInput}</div>
           </div>
-          <Tile value='C' secondClass='double' />
-          <Tile value='DEL' secondClass='double' />
-          <Tile value='7'/>
-          <Tile value='8'/>
-          <Tile value='9'/>
-          <Tile value='÷'/>
-          <Tile value='4'/>
-          <Tile value='5'/>
-          <Tile value='6'/>
-          <Tile value='×'/>
-          <Tile value='1'/>
-          <Tile value='2'/>
-          <Tile value='3'/>
-          <Tile value='+'/>
-          <Tile value='.'/>
-          <Tile value='0'/>
-          <Tile value='='/>
-          <Tile value='-'/>
+          {/* <Tile value='C' secondClass='double' />
+          <Tile value='DEL' secondClass='double' /> */}
+          <button className='buttons double' onClick={() => dispatch({ type: 'clear-all', payload: undefined })} >C</button>
+          <button className='buttons double' onClick={() => dispatch({ type: 'delete-digit', payload: undefined })} >DEL</button>
+          <Tile value={7} dispatch={dispatch} />
+          <Tile value={8} dispatch={dispatch} />
+          <Tile value={9} dispatch={dispatch} />
+          <OperationTile value='÷' dispatch={dispatch} />
+          <Tile value={4} dispatch={dispatch} />
+          <Tile value={5} dispatch={dispatch} />
+          <Tile value={6} dispatch={dispatch} />
+          <OperationTile value='×' dispatch={dispatch} />
+          <Tile value={1} dispatch={dispatch} />
+          <Tile value={2} dispatch={dispatch} />
+          <Tile value={3} dispatch={dispatch} />
+          <OperationTile value='+' dispatch={dispatch} />
+          <Tile value={'.'} dispatch={dispatch} />
+          <Tile value={0} dispatch={dispatch} />
+          <OperationTile value='=' dispatch={dispatch} />
+          <OperationTile value='-' dispatch={dispatch} />
+
+          {/* <Tile value='7' onClick={addToInput} /> */}
+          {/* <Tile value='8' onClick={addToInput} />
+          <Tile value='9' onClick={addToInput} />
+          <Tile value='÷' onClick={addToInput} />
+          <Tile value='4' onClick={addToInput} />
+          <Tile value='5' onClick={addToInput} />
+          <Tile value='6' onClick={addToInput} />
+          <Tile value='×' onClick={addToInput} />
+          <Tile value='1' onClick={addToInput} />
+          <Tile value='2' onClick={addToInput} />
+          <Tile value='3' onClick={addToInput} />
+          <Tile value='+' onClick={addToInput} />
+          <Tile value='.' onClick={addToInput} />
+          <Tile value='0' onClick={addToInput} />
+          <Tile value='=' onClick={addToInput} />
+          <Tile value='-' onClick={addToInput} /> */}
         </div>
       </div>
 
